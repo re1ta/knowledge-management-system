@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: richie
+    url: jdbc:postgresql://kexogg.ru:52345/knowledgeManagementSystemDb
+    password: DrMKKpMpAMRT9qfvaX2GVDZ76Svi3HPoynqnbME3WAxZdoSD9XhZCJZCd8gpoCnK
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    show-sql: 'true'
+
+
+server:
+  port: '55555'
