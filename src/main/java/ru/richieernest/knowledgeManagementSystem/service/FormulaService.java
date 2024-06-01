@@ -30,19 +30,14 @@ public class FormulaService {
     public List<FormulaDto> getAll() {
         List<Formula> formulas = formulaRepo.findAll();
         List<FormulaDto> formulaDtos = new ArrayList<>();
-        for (Formula value : formulas) {
-            formulaDtos.add(formulaFromDb(value));
-        }
+        formulas.forEach(value -> formulaDtos.add(formulaFromDb(value)));
         return formulaDtos;
     }
 
     public FormulaDto formulaFromDb(Formula formula){
         List<FormulaDependenciesMap> fdmArray = formulaDependenciesMapRepo.findByParentId(formula.getId());
         Map<String,Long> dependencies = new HashMap<>();
-        for (FormulaDependenciesMap fmd : fdmArray){
-            Long formulaId = formulaRepo.searchResultFormulaByLetter(fmd.getLetter());
-            dependencies.put(fmd.getLetter(), formulaId);
-        }
+        fdmArray.forEach(fdm -> dependencies.put(fdm.getLetter(),fdm.getChildFormulaId()));
         return FormulaDto.builder()
                 .id(formula.getId())
                 .formula(formula.getFormula())

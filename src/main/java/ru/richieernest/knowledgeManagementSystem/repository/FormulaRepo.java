@@ -29,6 +29,4 @@ public interface FormulaRepo extends JpaRepository<Formula, Long> {
     @Query(value = "SELECT * FROM formula a WHERE a.id = :id", nativeQuery = true)
     Formula searchFormulaById(@Param("id") Long id);
 
-    @Query(value = "SELECT result FROM formula a WHERE a.letter = :letter", nativeQuery = true)
-    Long searchResultFormulaByLetter(@Param("letter") String letter);
 }

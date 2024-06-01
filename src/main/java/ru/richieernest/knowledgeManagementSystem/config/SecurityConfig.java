@@ -38,15 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS)
                         .permitAll()
-                        .requestMatchers(
-                                "/auth/**",
-                                "/registration",
-                                "/refreshToken",
-                                "/forgetPassword/**",
-                                "/forgetPassword/",
-                                "/admin",
-                                "/history/**",
-                                "/**")
+                        .requestMatchers("/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

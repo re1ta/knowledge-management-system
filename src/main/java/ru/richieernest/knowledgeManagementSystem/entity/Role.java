@@ -7,9 +7,9 @@ import lombok.*;
 @Getter
 public enum Role {
 
-    ADMIN("admin", "ROLE_ADMIN"),
-    WRITER("writer", "ROLE_WRITER"),
-    READER("reader", "ROLE_READER");
+    ADMIN("admin", "admin"),
+    WRITER("writer", "writer"),
+    READER("reader", "reader");
 
     private String id;
     private String roleName;
