@@ -25,20 +25,6 @@ public class ArticleController {
         List<ArticleLink> articles = articleService.getAllRootArticleLinks();
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<ArticleId> load(@PathVariable Long id){
-        return new ResponseEntity<>(articleService.loadTreeAndArticle(id), HttpStatus.OK);
-    }
-    @GetMapping("/test/{id}")
-    public ResponseEntity<ArticleAndChildrenDto> childrenArticle(@PathVariable Long id){
-        return new ResponseEntity<>(articleService.getArticleChildren(id), HttpStatus.OK);
-    }
-
-    @PostMapping("/add")
-    public ResponseEntity<List<Article>> addArticles(@RequestBody List<ArticlePostRequestDto> articlePostRequestDto){
-        List<Article> articles = articleService.addArticles(articlePostRequestDto);
-        return new ResponseEntity<>(articles, HttpStatus.OK);
-    }
 
     @PostMapping("/")
     public ResponseEntity<Article> addArticle(@RequestBody ArticlePostRequestDto articlePostRequestDto){
@@ -63,10 +49,27 @@ public class ArticleController {
                 .build();
         return new ResponseEntity<>(articleService.updateArticle(article), HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ArticleId> load(@PathVariable Long id){
+        return new ResponseEntity<>(articleService.loadTreeAndArticle(id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArticleById(@PathVariable Long id){
         historyService.deleteAll(id);
         articleService.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/test/{id}")
+    public ResponseEntity<ArticleAndChildrenDto> childrenArticle(@PathVariable Long id){
+        return new ResponseEntity<>(articleService.getArticleChildren(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<List<Article>> addArticles(@RequestBody List<ArticlePostRequestDto> articlePostRequestDto){
+        List<Article> articles = articleService.addArticles(articlePostRequestDto);
+        return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 }

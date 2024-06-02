@@ -21,13 +21,9 @@ public class FormulaService {
     private final FormulaRepo formulaRepo;
     private final FormulaDependenciesMapRepo formulaDependenciesMapRepo;
 
-    //получение одного
-    public FormulaDto getFormulaById(Long id) {
-        return new FormulaDto();
-    }
-
     //метод для получения всех формул
     public List<FormulaDto> getAll() {
+        System.out.println("dfsdffds");
         List<Formula> formulas = formulaRepo.findAll();
         List<FormulaDto> formulaDtos = new ArrayList<>();
         formulas.forEach(value -> formulaDtos.add(formulaFromDb(value)));

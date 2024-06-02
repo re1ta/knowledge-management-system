@@ -24,26 +24,28 @@ public class FormulaController {
         return formulaService.getAll();
     }
 
+    @PostMapping("/")
+    public void saveFormuls(@RequestBody FormulaDto formulaDto){
+        formulaService.addFormula(formulaDto);
+    }
+
+    @PutMapping("/")
+    public Double updateFormula(@RequestBody FormulaDto formulaDto){
+        return formulaService.updateFormula(formulaDto);
+    }
+
     @GetMapping("/{id}")
     public FormulaDto getFormula(@PathVariable Long id){
         return formulaService.formulaFromDb(formulaRepo.searchFormulaById(id));
     }
 
-    @GetMapping("/map")
-    public Map<Long,String> getFormulaNameId(){
-        return formulaService.formulaMap();
-    }
-    @PutMapping("/")
-    public Double updateFormula(@RequestBody FormulaDto formulaDto){
-        return formulaService.updateFormula(formulaDto);
-    }
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         formulaService.deleteFormula(id);
     }
 
-    @PostMapping("/")
-    public void saveFormuls(@RequestBody FormulaDto formulaDto){
-        formulaService.addFormula(formulaDto);
+    @GetMapping("/map")
+    public Map<Long,String> getFormulaNameId(){
+        return formulaService.formulaMap();
     }
 }

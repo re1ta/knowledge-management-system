@@ -3,6 +3,7 @@ package ru.richieernest.knowledgeManagementSystem.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import ru.richieernest.knowledgeManagementSystem.dto.formula.FormulaDto;
 import ru.richieernest.knowledgeManagementSystem.dto.token.JwtResponse;
 import ru.richieernest.knowledgeManagementSystem.dto.token.RefreshTokenRequest;
 import ru.richieernest.knowledgeManagementSystem.entity.Employee;
@@ -11,8 +12,10 @@ import ru.richieernest.knowledgeManagementSystem.entity.Role;
 import ru.richieernest.knowledgeManagementSystem.repository.EmployeeRepo;
 import ru.richieernest.knowledgeManagementSystem.service.Auth.JwtService;
 import ru.richieernest.knowledgeManagementSystem.service.Auth.RefreshTokenService;
+import ru.richieernest.knowledgeManagementSystem.service.FormulaService;
 
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
+    private final FormulaService formulaService;
 
     @GetMapping("/admin")
     public void admin(){

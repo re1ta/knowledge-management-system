@@ -21,6 +21,7 @@ public class AdminService {
 
     private final EmployeeRepo employeeRepo;
     private final PasswordEncoder passwordEncoder;
+
     public List<EmployeeAndRole> findAllEmployees(){
         List<Employee> employees = employeeRepo.getEmployees();
         List<EmployeeAndRole> employeeAndRoles = new ArrayList<>();
@@ -39,6 +40,12 @@ public class AdminService {
         }
         return employeeAndRoles;
     }
+
+    @Transactional
+    public void updateUsers(List<User> users){
+        users.forEach(value -> employeeRepo.updateUser(value.getUsername(), value.getPassword(), value.getName(), value.getSurname(), value.getPatronymic(), value.getEmail()));
+    }
+
     @Transactional
     public void deleteEmployee(Long id){
         employeeRepo.deleteById(id);
