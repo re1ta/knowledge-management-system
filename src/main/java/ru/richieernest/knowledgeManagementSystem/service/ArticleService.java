@@ -60,10 +60,13 @@ public class ArticleService {
     public List<ArticleLink> getAllRootArticleLinks() { return articleRepo.findAllArticleLink(); }
 
     public Article addArticle(Article article) {
-        if(!articleRepo.lastArticle().getContent().equals(article.getContent())) {
-            return articleRepo.save(article);
+        Article art = articleRepo.lastArticle();
+        if(art!=null) {
+            if (!art.getContent().equals(article.getContent())) {
+                return articleRepo.save(article);
+            }
         }
-        return null;
+        return articleRepo.save(article);
     }
 
     public List<Article> addArticles(List<ArticlePostRequestDto> newArticles) {

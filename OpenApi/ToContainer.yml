@@ -1,0 +1,681 @@
+openapi: 3.0.0
+
+info:
+  title: kms-api-gateway
+  version: 1.0.0
+
+x-yc-apigateway:
+  cors:
+    origin: '*'
+    methods: '*'
+    allowedHeaders: '*'
+    allowCredentials: true
+  service_account_id: aje19619ld4g121br37l
+
+servers:
+  - url: https://d5dmup0d42c7f5ukd595.apigw.yandexcloud.net
+paths:
+
+  /auth/login:
+    post:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+      operationId: authenticateAndGetToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: authenticateAndGetToken
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+  /auth/registration:
+    post:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+      operationId: registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Пользователь создан
+
+  /refreshToken:
+    post:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+      operationId: refreshToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: refreshToken
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+
+  /:
+    get:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: loadAllRootArticles
+      responses:
+        '200':
+          description: loadAllRootArticles
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleLink'
+    post:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: addArticle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticlePostRequestDto'
+      responses:
+        '200':
+          description: addArticle
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Article'
+
+    put:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: updateArticle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleDto'
+      responses:
+        '200':
+          description: updateArticle
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Article'
+
+  /{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: path
+    get:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: load
+      responses:
+        '200':
+          description: load
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleId'
+    delete:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: deleteArticleById
+      responses:
+        '200':
+          description: Статья успешно удалена
+
+  /test/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: path
+    get:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: childrenArticle
+      responses:
+        '200':
+          description: childrenArticle
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/ArticleAndChildrenDto'
+  /add:
+    post:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: addArticles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ArticlePostRequestDto'
+      responses:
+        '200':
+          description: addArticles
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Article'
+
+  /formulas:
+    get:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: getAllFormulas
+      responses:
+        '200':
+          description: getAllFormulas
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormulaDto'
+    post:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: saveFormuls
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormulaDto'
+      responses:
+        '200':
+          description: Формула сохранилась
+    put:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: updateFormula
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormulaDto'
+      responses:
+        '200':
+          description: getAllFormulas
+          content:
+            'application/json':
+              schema:
+                type: number
+  /formulas/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: path
+    get:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: getFormula
+      responses:
+        '200':
+          description: getFormula
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/FormulaDto'
+    delete:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: delete
+      responses:
+        '200':
+          description: delete
+  /formulas/map:
+    get:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: getFormulaNameId
+      responses:
+        '200':
+          description: getFormulaNameId
+          content:
+            'application/json':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /history/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: path
+    get:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: view
+      responses:
+        '200':
+          description: view
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/EditDto'
+    post:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: saveVersion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateVersionDto'
+      responses:
+        '200':
+          description: saveVersion
+  /history/versions/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: path
+    get:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: oldVersion
+      responses:
+        '200':
+          description: oldVersion
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/TextDto'
+    delete:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: deleteVersion
+      responses:
+        '200':
+          description: deleteVersion
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/HistoryArticle'
+  /panel/users:
+    get:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: viewEmp
+      responses:
+        '200':
+          description: viewEmp
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeAndRole'
+    put:
+      x-yc-apigateway-integration:
+        type: serverless_containers
+        container_id: bbafcpeckkgctgerjgc2
+        security:
+          -jwtHeaderAuthorizer:
+            - profile:read
+            - profile:write
+      operationId: updateEmp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: updateEmp
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        patronymic:
+          type: string
+        email:
+          type: string
+
+    JwtResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        token:
+          type: string
+
+    RefreshTokenRequest:
+      type: object
+      properties:
+        token:
+          type: string
+
+    ArticleLink:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+    Article:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        author:
+          type: string
+        createdAt:
+          type: string
+        content:
+          type: string
+        articleParentId:
+          type: integer
+
+    ArticlePostRequestDto:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        content:
+          type: string
+        articleParentId:
+          type: integer
+
+    ArticleDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        author:
+          type: string
+        createdAt:
+          type: string
+        content:
+          type: string
+        articleParentId:
+          type: integer
+        childArticles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArticleLink'
+
+    ArticleLinkBranchDto:
+      type: object
+      properties:
+        articleLink:
+          $ref: '#/components/schemas/ArticleLink'
+        childArticles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArticleLinkBranchDto'
+
+    ArticleId:
+      type: object
+      properties:
+        articleLinkBranchDto:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArticleLinkBranchDto'
+        article:
+          type: string
+
+    ArticleAndChildrenDto:
+      type: object
+      properties:
+        article:
+          $ref: '#/components/schemas/Article'
+        childArticles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArticleLink'
+
+    FormulaDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        formula:
+          type: string
+        result:
+          type: number
+        dependencies:
+          type: object
+          additionalProperties:
+            type: integer
+
+    EditDto:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        id_version:
+          type: integer
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/VersionDto'
+
+    VersionDto:
+      type: object
+      properties:
+        id_version:
+          type: integer
+        createdAt:
+          type: string
+
+    UpdateVersionDto:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        id_article:
+          type: integer
+        id_version:
+          type: integer
+
+    TextDto:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+
+    HistoryArticle:
+      type: object
+      properties:
+        id:
+          type: integer
+        id_article:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: string
+
+    EmployeeAndRole:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        patronymic:
+          type: string
+        regDate:
+          type: string
+          format: date
+        role:
+          type: string
+
+  securitySchemes:
+    jwtHeaderAuthorizer:
+      type: openIdConnect
+      x-yc-apigateway-authorizer:
+        type: jwt
+        jwksUri: https://example.com/.well-known/jwks.json
+        identitySource:
+          in: header
+          name: Authorization
+          prefix: "Bearer "
+
+

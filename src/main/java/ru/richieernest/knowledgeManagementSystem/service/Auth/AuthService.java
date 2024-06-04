@@ -22,7 +22,8 @@ public class AuthService{
 
     @Transactional
     public void createUser(User user) {
-       Employee employee = Employee.builder()
+        System.out.println(user);
+        Employee employee = Employee.builder()
               .username(user.getUsername())
                .password(passwordEncoder.encode(user.getPassword()))
                .name(user.getName())

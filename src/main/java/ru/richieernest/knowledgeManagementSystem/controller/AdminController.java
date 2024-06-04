@@ -29,7 +29,7 @@ public class AdminController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Void> updateEmp(@RequestBody List<User> users){
+    public ResponseEntity<Void> updateEmp(@RequestBody List<UserRole> users){
         adminService.updateUsers(users);
         return ResponseEntity.ok().build();
     }

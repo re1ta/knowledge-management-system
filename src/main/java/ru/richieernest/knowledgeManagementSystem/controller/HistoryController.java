@@ -28,14 +28,14 @@ public class HistoryController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<Void> save(@RequestBody UpdateVersionDto updateVersionDto){
+    public ResponseEntity<Void> saveVersion(@RequestBody UpdateVersionDto updateVersionDto){
         historyService.saveVersion(updateVersionDto);
         return ResponseEntity.ok().build();
     }
 
 
     @DeleteMapping("/versions/{id_version}")
-    public ResponseEntity<HistoryArticle> delete(@PathVariable Long id_version){
+    public ResponseEntity<HistoryArticle> deleteVersion(@PathVariable Long id_version){
         historyService.delete(id_version);
         return ResponseEntity.ok().build();
     }

@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS)
                         .permitAll()
-                        .requestMatchers("/**")
+                        .requestMatchers("/**","/formulas/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

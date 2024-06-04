@@ -75,17 +75,26 @@ public class FormulaService {
     }
 
     private double calculateFormula(FormulaDto formulaDto){
-        String apiUrl = "https://functions.yandexcloud.net/d4ei318sjo5el618k8ad";
+        String apiUrl = "https://functions.yandexcloud.net/d4e6tuni7n56makddo5q";
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Double> map;
+        if(formulaDto.getDependencies()!= null){
+            map = idToResult(formulaDto.getDependencies());
+        }
+        else{
+            map = null;
+        }
         FormulaCal formulaCal = FormulaCal.builder()
                 .formula(formulaDto.getFormula())
-                .dependencies(idToResult(formulaDto.getDependencies()))
+                .dependencies(map)
                 .build();
+        System.out.println(formulaCal);
         HttpEntity<Object> requestEntity = new HttpEntity<>(formulaCal, headers);
         ResponseEntity<String> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
-        return Long.parseLong(responseEntity.getBody());
+        System.out.println(responseEntity.getBody() + " ответ");
+        return Double.parseDouble(responseEntity.getBody());
     }
 
     @Transactional
@@ -105,22 +114,26 @@ public class FormulaService {
     @Transactional
     //апдейт одного, логика обновления всех зависимых формул
     public double updateFormula(FormulaDto formulaDto) {
-        formulaRepo.updateFormula(formulaDto.getFormula(), calculateFormula(formulaDto), formulaDto.getTitle(), formulaDto.getId());
-        List<String> letters = new ArrayList<>();
-        formulaDto.getDependencies().forEach((k, v) -> letters.add(k));
-        System.out.println(letters);
-        List<FormulaDependenciesMap> fdmFromDb = formulaDependenciesMapRepo.findLettersByParentId(formulaDto.getId());
-        List<String> lettersFromDb = new ArrayList<>();
-        for (FormulaDependenciesMap fmd : fdmFromDb){
-            lettersFromDb.add(fmd.getLetter());
-        }
-        for (String l : lettersFromDb ){
-            if(!letters.contains(l)) { formulaDependenciesMapRepo.deleteByLetter(l);}
+        var cal = calculateFormula(formulaDto);
+        formulaRepo.updateFormula(formulaDto.getFormula(), cal, formulaDto.getTitle(), formulaDto.getId());
+        System.out.println(formulaDto.getDependencies());
+        if(formulaDto.getDependencies() != null){
+            List<String> letters = new ArrayList<>();
+            formulaDto.getDependencies().forEach((k, v) -> letters.add(k));
+            System.out.println(letters);
+            List<FormulaDependenciesMap> fdmFromDb = formulaDependenciesMapRepo.findLettersByParentId(formulaDto.getId());
+            List<String> lettersFromDb = new ArrayList<>();
+            for (FormulaDependenciesMap fmd : fdmFromDb){
+                lettersFromDb.add(fmd.getLetter());
+            }
+            for (String l : lettersFromDb ){
+                if(!letters.contains(l)) { formulaDependenciesMapRepo.deleteByLetter(l);}
+            }
+
+            formulaDto.getDependencies().forEach((k, v) -> checkContainsLetters(k,v,lettersFromDb,formulaDto.getId()));
         }
 
-        formulaDto.getDependencies().forEach((k, v) -> checkContainsLetters(k,v,lettersFromDb,formulaDto.getId()));
-
-        return calculateFormula(formulaDto);
+        return cal;
     }
 
     public void checkContainsLetters(String letter, Long id_child, List<String> lettersFromDb, Long id_parent){

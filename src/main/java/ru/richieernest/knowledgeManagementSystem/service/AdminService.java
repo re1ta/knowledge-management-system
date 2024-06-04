@@ -13,6 +13,7 @@ import ru.richieernest.knowledgeManagementSystem.repository.EmployeeRepo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,14 +27,13 @@ public class AdminService {
         List<Employee> employees = employeeRepo.getEmployees();
         List<EmployeeAndRole> employeeAndRoles = new ArrayList<>();
         for(Employee e : employees){
+            System.out.println(e);
             EmployeeAndRole ear = EmployeeAndRole.builder()
                     .id(e.getId())
-                    .username(e.getUsername())
-                    .password(e.getPassword())
-                    .name(e.getName())
-                    .surname(e.getSurname())
+                    .firstName(e.getName())
+                    .lastName(e.getSurname())
                     .patronymic(e.getPatronymic())
-                    .email(e.getEmail())
+                    .regDate(new Date())
                     .role(String.valueOf(e.getRoles().toArray()[0]).toLowerCase())
                     .build();
             employeeAndRoles.add(ear);
@@ -42,8 +42,8 @@ public class AdminService {
     }
 
     @Transactional
-    public void updateUsers(List<User> users){
-        users.forEach(value -> employeeRepo.updateUser(value.getUsername(), value.getPassword(), value.getName(), value.getSurname(), value.getPatronymic(), value.getEmail()));
+    public void updateUsers(List<UserRole> users){
+        users.forEach(value -> employeeRepo.updateRole(value.getId(), value.getRole().toUpperCase()));
     }
 
     @Transactional

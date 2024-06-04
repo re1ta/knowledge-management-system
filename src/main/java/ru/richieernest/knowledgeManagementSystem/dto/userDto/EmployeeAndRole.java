@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -13,17 +15,13 @@ public class EmployeeAndRole {
 
     private Long id;
 
-    private String username;
+    private String firstName;
 
-    private String password;
-
-    private String name;
-
-    private String surname;
+    private String lastName;
 
     private String patronymic;
 
-    private String email;
+    private Date regDate;
 
     private String role;
 }
